@@ -1,0 +1,118 @@
+#include <iostream>
+#include <time.h>
+#include <string.h>
+#include <Windows.h>
+using namespace std;
+struct fio // фамилия имя отчество
+{
+string name; //имя
+string surname; // фамилия
+string othestvo; //отчество
+};
+class Person {fio nso; //ФИО
+string floor; //Пол
+string education; //Образование
+int year; //Год рождения
+public:
+Person ();
+fio getName (); //ФИО
+string getFloor (); //Пол
+string getEducation (); //Образование
+int getYear ();
+void show();
+int count_year();
+};
+
+//Конструктор класса по умолчанию
+Person::Person()
+{
+cout<<"Введите фамилию: "; cin >> nso.name;
+cout<<"Введите имя: "; cin >> nso.surname;
+cout<<"Введите отчество: "; cin >> nso.othestvo;
+cout<<"Введите пол: "; cin >> floor;
+cout<<"Введите образование: "; cin >> education;
+cout<<"Введите год рождения: "; cin>>year;
+}
+
+//Метод вывод днных на экран монитора
+void Person::show()
+{
+cout<<"ФИО: "<< nso.name << " " << nso.surname << " " << nso.othestvo <<endl;
+cout<<"Пол: "<<floor<<endl;
+cout<<"Образование: "<<education<<endl;
+cout<<"Год рождения: "<<year<<endl;
+}
+
+//Метод получения текущего количества лет с начала даты рождения
+int Person::count_year()
+{
+struct tm * u;
+const time_t tt=time(NULL);
+u=localtime (&tt);
+return u->tm_yday;
+}
+//Метод получения ФИО
+fio Person::getName() {return nso;}
+
+//Метод получения пола студента
+string Person::getFloor () {return floor;}
+
+//Метод получения обрзовния
+string Person:: getEducation() {return education;}
+
+//Метод получения года рождения
+int Person::getYear() {return year;}
+
+//Функция вывода списка граждан
+//возраст, которых не привышает заданный
+void spisNePrevVoz (Person spis[],int n)
+{int a,i,k=0;
+cout<<"Введите возраст: ";cin>>a;
+for(i=0;i<n;i++)
+if((2023 - spis[i].getYear ())*365+spis[i].count_year()>a*365)
+{spis[i].show();k++;}
+if(k == 0) cout << "Данные не найдены";
+}
+
+//Функция вывода списка граждан с высшим образованием
+void higherEducation (Person spis[],int n)
+{int k;
+string Education;
+cout<<"Введите образование: "; cin >> Education;
+for(int i=0;i<n;i++)
+if (spis[i].getEducation() == Education)
+{spis[i].show();k++;}
+if (k==0) cout<<"Данные не найдены";
+}
+
+//Функция вывода списка граждан мужского пола
+void floorMan (Person spis[],int n)
+{int k;
+string floor;
+cout<<"Введите пол: "; cin >> floor;
+for(int i=0;i<n;i++)
+if (spis[i].getFloor()==floor)
+{spis[i].show();k++;}
+if (k==0) cout<<"Данные не найдены";
+}
+main ()
+{SetConsoleCP(1251);
+SetConsoleOutputCP(1251);
+Person *spis;
+int N;
+cout<<"Bведите количество людей: "; cin>>N;
+spis=new Person [N];
+cout<<endl<<"\nСПИСОК ЛЮДЕЙ"<<endl;
+for (int i=0; i<N;i++)
+{
+cout<<"========================"<<endl;
+spis[i].show();
+}
+cout<<"\n\n ЛЮДИ СТАРШЕ ЗАДАННОГО ВОЗРАСТА\n";
+spisNePrevVoz(spis,N);
+cout<<"\n\n СПИСОК ЛЮДЕЙ С ВЫСШИМ ОБРАЗОВАНИЕМ\n";
+higherEducation(spis,N);
+cout<<"\n\n ЛЮДИ МУЖСОГО ПОЛА\n";
+floorMan(spis,N);
+delete [] spis; //удаление массива объектов памяти
+}
